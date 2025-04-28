@@ -1,0 +1,20 @@
+.listusers_page{
+   padding: 0 2%;
+}
+
+.listusers-container-list-users{
+   background-color: white;
+   margin: auto;
+   border-radius: 30px;
+   padding: 25px;
+}
+
+.listusers-container-title{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.listusers-container-title button{
+   border-radius: 30px;
+}

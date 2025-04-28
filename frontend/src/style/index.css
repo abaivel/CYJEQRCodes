@@ -24,9 +24,36 @@ body {
   font-family: 'Poppins';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  width:100%;
+  min-height: 100vh;
+}
+html{
+  min-height: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.login-layout, .main-layout{
+  height: 100%;
+  width:100%;
+  min-height: 100vh;
+}
+
+.main-layout{
+  background-color: #c2c9e4;
+}
+
+#root{
+  height: 100%;
+  width:100%;
+  min-height: 100vh;
+}
+
+h2{
+  font-family: Poppins;
+  color: #1e3a84;
+}
+
+p{
+  margin:0;
+  font-family: 'Barlow Semi Condensed';
 }

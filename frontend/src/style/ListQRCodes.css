@@ -1,0 +1,45 @@
+.listqrcodes_page{
+   padding: 2%;
+}
+
+.listqrcodes-container-stats, .listqrcodes-container-list-qr-codes{
+   background-color: white;
+   margin: auto;
+   border-radius: 30px;
+   padding: 25px;
+}
+
+.listqrcodes-container-title{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.listqrcodes-container-title button{
+   border-radius: 30px;
+}
+
+.listqrcodes-stats{
+   display: flex;
+   justify-content: space-evenly;
+   margin-top: 15px;
+}
+
+.listqrcodes-stat{
+   border-radius: 30px;
+   width: 30%;
+   padding: 15px;
+}
+
+.listqrcodes-stat-title{
+   color: white;
+}
+
+.listqrcodes-stat-number{
+   font-size: 25px;
+   color: white;
+}
+
+.button-edit{
+   width: fit-content;
+}

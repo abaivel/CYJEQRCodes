@@ -1,0 +1,38 @@
+.div-connexion_page{
+  background-image: url(../assets/images/background_page_connexion.jpg);
+  border-image: linear-gradient(#567ed6d6 100%, #567ed6d6 100%) fill 1;
+  height: 100%;
+  width:100%;
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
+
+.div_connexion_page_form_container{
+  background-color: white;
+  border-radius: 50px;
+  width: 30%;
+  margin: auto;
+  padding: 20px;
+}
+
+.connexion_page_app_name{
+  font-family: 'Anton';
+  margin: 0;
+  text-align: center;
+  font-size: 50px;
+  padding: 40px 0;
+  color: white;
+  font-weight: normal;
+}
+
+.connexion_page_title{
+  text-align: center;
+  margin: 0 0 30px 0;
+  font-family: 'Poppins';
+  color:#1e3a84;
+  text-decoration: underline;
+  text-decoration-color: #eda02c;
+  text-decoration-thickness: 5px;
+  font-size: 1.8em;
+}
