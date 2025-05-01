@@ -40,6 +40,8 @@ html{
 
 .main-layout{
   background-color: #c2c9e4;
+  display: flex;
+  flex-direction: column;
 }
 
 #root{

@@ -2,16 +2,19 @@ import { Button} from '@mui/material';
 import '../../style/ListQRCodes.css';
 import { DataGrid } from '@mui/x-data-grid';
 import {frFR} from '@mui/x-data-grid/locales';
-import * as React from 'react';
+import React, { useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { Dialog, DialogContent } from '@mui/material';
+import QRCodeForm from '../../components/QRCodeForm';
 
 
 
 
 function ListQRCodes() {
- const [open, setOpen] = React.useState(false);
+ const [openQRCodePreview, setOpenQRCodePreview] = React.useState(false);
+ const [openQRCodeForm, setOpenQRCodeForm] = React.useState(false);
 const [qrValue, setQrValue] = React.useState('');
+ const qrRef = useRef();
 
 /*const handleOpen = (e,value) => {
    console.log(e);
@@ -21,17 +24,23 @@ const [qrValue, setQrValue] = React.useState('');
   setOpen(true);
 };*/
 
-function handleOpen(e, value){
-   console.log(e);
+function handleOpenQRCodePreview(e, value){
    e.preventDefault();
    e.stopPropagation();
   setQrValue(value);
-  setOpen(true);
+  setOpenQRCodePreview(true);
 }
 
-const handleClose = () => {
-  setOpen(false);
+function handleOpenQRCodeForm(){
+  setOpenQRCodeForm(true);
+}
+
+const handleCloseQRCodePreview = () => {
+  setOpenQRCodePreview(false);
 };
+const handleCloseQRCodeForm = () => {
+   setOpenQRCodeForm(false);
+ };
 
 function openQrCodePage(id){
    console.log(id.ids)
@@ -39,6 +48,17 @@ function openQrCodePage(id){
       window.location.replace('/qrcode/'+rows[item-1].qrcodeId)
    }
 }
+
+const handleDownload = () => {
+   const canvas = qrRef.current.querySelector('canvas');
+   if (!canvas) return;
+
+   const url = canvas.toDataURL('image/png');
+   const link = document.createElement('a');
+   link.href = url;
+   link.download = 'qr-code.png';
+   link.click();
+ };
 
 const columns = [
    { field: 'id', headerName: 'ID', width: 70 },
@@ -64,7 +84,7 @@ const columns = [
       flex: 1,
       renderCell: (params) => (
          <div>
-            <QRCodeCanvas onClick={(event)=>handleOpen(event, params.value)} style={{cursor: 'pointer'}}
+            <QRCodeCanvas onClick={(event)=>handleOpenQRCodePreview(event, params.value)} style={{cursor: 'pointer'}}
                value={params.value}
                size={64}
                level="H" // Haute qualité de correction
@@ -104,11 +124,7 @@ const columns = [
    {id:2, Nom: 'QRCode2', Lien: 'www.google.com', QRCode: 'www.google.com', nbVisites:5, DateCreation: '2025-04-02', Type: 'Formulaire', qrcodeId: '253'},
    {id:3, Nom: 'QRCode3', Lien: 'www.google.com', QRCode: 'www.google.com', nbVisites:10, DateCreation: '2025-04-02', Type: 'Formulaire', qrcodeId: '254'},
  ];
- 
- const paginationModel = { page: 0, pageSize: 5 };
-  return (
-    <div className='listqrcodes_page'>
-      <div className='listqrcodes-container-stats'>
+ /*<div className='listqrcodes-container-stats'>
          <h2 style={{margin:0}}>Vue d'ensemble</h2>
          <div className='listqrcodes-stats'>
             <div className='listqrcodes-stat' style={{backgroundColor:'#7f92df'}}>
@@ -124,10 +140,14 @@ const columns = [
                <p className='listqrcodes-stat-number'>42</p>
             </div>
          </div>
-      </div>
+      </div>*/
+ 
+ const paginationModel = { page: 0, pageSize: 5 };
+  return (
+    <div className='listqrcodes_page'>
       <div className='listqrcodes-container-title'>
          <h2>Mes QR Codes</h2>
-         <Button size="medium" variant="contained" color="secondary">Créer un QR Code</Button>
+         <Button size="medium" variant="contained" color="secondary" onClick={handleOpenQRCodeForm}>Créer un QR Code</Button>
       </div>
       <div className='listqrcodes-container-list-qr-codes'>
          <DataGrid
@@ -144,9 +164,18 @@ const columns = [
             //autosizeOptions={autosizeOptions}
          />
       </div>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={openQRCodePreview} onClose={handleCloseQRCodePreview}>
+         <DialogContent style={{ display: 'flex', justifyContent: 'center', alignItems: 'center',flexDirection: "column" }}>
+            <div ref={qrRef}>
+               <QRCodeCanvas value={qrValue} size={350} level="H" fgColor='#1e3a84' />
+            </div>
+            <Button color="secondary" onClick={handleDownload} fullWidth variant="contained" size="large">Télécharger</Button>
+         </DialogContent>
+      </Dialog>
+
+      <Dialog open={openQRCodeForm} onClose={handleCloseQRCodeForm}>
          <DialogContent style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <QRCodeCanvas value={qrValue} size={256} level="H" includeMargin={true} />
+            <QRCodeForm qrcode= {{qrcodeId : 0, nom:"", lien:"", type:""}}/>
          </DialogContent>
       </Dialog>
     </div>

@@ -51,7 +51,7 @@ function ListUsers() {
   {
         field: 'UserId',
         headerName: '',
-        fill:2,
+        flex:0.5,
         sortable: false,
         filterable: false,
         renderCell: (params) => (

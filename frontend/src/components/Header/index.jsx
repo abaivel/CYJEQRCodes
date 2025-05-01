@@ -14,6 +14,12 @@ function Header() {
           Mes QR Codes
         </NavLink>
         <NavLink 
+          to="/stats" 
+          className={({ isActive }) => isActive ? "header_link active" : "header_link"}
+        >
+          Statistiques
+        </NavLink>
+        <NavLink 
           to="/utilisateurs" 
           className={({ isActive }) => isActive ? "header_link active" : "header_link"}
         >

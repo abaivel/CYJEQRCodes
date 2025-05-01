@@ -1,0 +1,25 @@
+.qrcode_page{
+   padding: 2%;
+}
+
+.qrcode-container{
+   background-color: white;
+   margin: auto;
+   border-radius: 30px;
+   padding: 25px;
+}
+
+.qrcode-page-qrcode{
+   display: flex;
+    flex-direction: column;
+    margin: 30px 30px 0 0;
+    gap: 20px;
+}
+
+.qrcode_page_details{
+   display: flex;
+}
+
+.qrcode_page_infos p{
+   font-size: 20px;
+}

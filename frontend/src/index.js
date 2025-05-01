@@ -7,6 +7,7 @@ import QRCode from './pages/QRCode';
 import Profile from './pages/Profile';
 import ListUsers from './pages/ListUsers';
 import Link from './pages/Link';
+import Statistiques from './pages/Statistiques';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import LoginLayout from './layouts/LoginLayout';
@@ -45,9 +46,9 @@ root.render(
                 <Route element={<MainLayout />}>
                   <Route path="/mesqrcodes" element={<ListQRCodes />} />
                   <Route path="/qrcode/:idQRCode" element={<QRCode />} />
+                  <Route path="/stats" element={<Statistiques />} />
                   <Route path="/profil" element={<Profile />} />
                   <Route path="/utilisateurs" element={<ListUsers />} />
-                  {/* Ajoute ici toutes tes autres pages avec header */}
                 </Route>
                 <Route path="/link/:sharelink" element={<Link/>}/>
             </Routes>
