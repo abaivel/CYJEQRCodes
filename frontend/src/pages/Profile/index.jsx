@@ -13,10 +13,33 @@ function Profile() {
     return prenom !== "" && nom !== "" && email !== ""; 
  }
 
+ function getCookie(name) {
+  const cookieValue = document.cookie
+    .split('; ')
+    .find(row => row.startsWith(name + '='));
+  return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
+}
+
+ const handleLogout = async () => {
+  const csrfToken = getCookie("csrftoken");
+  console.log(csrfToken)
+  const response = await fetch("http://localhost:8000/api/logout/", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "X-CSRFToken": csrfToken,
+    },
+  });
+
+  if (response.ok) {
+    window.location.replace('/');
+  }
+};
+
 
    return (
     <div className='div-profile-page'>
-      <div className="div-profile-page-form-container">
+      <div className="div-profile-page-form-container white-container">
         <h2 className='profile-page-title'>Connexion</h2>
         <TextField value={prenom} 
           onChange={(event)=>setPrenom(event.target.value)} 
@@ -56,7 +79,8 @@ function Profile() {
         {readOnly ?
           <div>
             <Button color="secondary" style={{ marginTop: 16}} fullWidth variant="contained" size="large" onClick={()=>setReadOnly(false)}>Modifier</Button>
-            <Button color="secondary" style={{ marginTop: 16, marginBottom: 24}} fullWidth variant="outlined" size="large">Changer son mot de passe</Button>
+            <Button color="secondary" style={{ marginTop: 16}} fullWidth variant="outlined" size="large">Changer son mot de passe</Button>
+            <Button color="secondary" style={{ marginTop: 16, marginBottom: 24}} fullWidth variant="outlined" size="large" onClick={handleLogout}>Se déconnecter</Button>
           </div>
           :
           <Button disabled={!formValid()} color="secondary" style={{ marginTop: 16}} fullWidth variant="contained" size="large" onClick={()=>setReadOnly(true)}>Enregistrer</Button>

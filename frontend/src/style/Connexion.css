@@ -36,3 +36,9 @@
   text-decoration-thickness: 5px;
   font-size: 1.8em;
 }
+
+.connexion_page_error_message{
+  color: red;
+  text-align: center;
+  font-size: 17px;
+}

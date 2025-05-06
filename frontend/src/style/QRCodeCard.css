@@ -1,0 +1,30 @@
+.qrcode-card-container{
+   background-color: white;
+   border-radius: 15px;
+   margin-bottom: 20px;
+   cursor: pointer;
+   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.qrcode-card-header{
+   background-color: #c2c9e4;
+   border-radius: 15px 15px 0 0;
+   padding: 10px 0;
+   display: grid;
+   grid-template-columns: 15% 70% 15%;
+}
+
+.qrcode-card-header h3{
+   margin: 0;
+   text-align: center;
+}
+
+.qrcode-card-content{
+   padding: 30px;
+}
+
+.qrcode-card-content p {
+   font-size: 18px;
+   text-align: center;
+}
+

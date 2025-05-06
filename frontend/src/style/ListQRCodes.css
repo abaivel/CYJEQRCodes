@@ -43,3 +43,9 @@
 .button-edit{
    width: fit-content;
 }
+
+.listqrcodes-container-list-qr-codes2{
+   display: flex;
+   justify-content: space-evenly;
+   flex-wrap: wrap;
+}

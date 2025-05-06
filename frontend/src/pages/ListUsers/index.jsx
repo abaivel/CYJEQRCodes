@@ -77,7 +77,7 @@ function ListUsers() {
           <h2>Utilisateurs</h2>
           <Button size="medium" variant="contained" color="secondary" onClick={()=> handleOpen({Nom: '',Prenom: '', Email:'', Roles: '', UserId:0})}>Créer un utilisateur</Button>
        </div>
-       <div className='listusers-container-list-users'>
+       <div className='listusers-container-list-users white-container'>
           <DataGrid
              rows={rows}
              columns={columns}

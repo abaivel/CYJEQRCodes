@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './style/index.css';
 import Connexion from './pages/Connexion';
 import ListQRCodes from './pages/ListQRCodes';
+import ListQRCodes2 from './pages/ListQRCodes2';
 import QRCode from './pages/QRCode';
 import Profile from './pages/Profile';
 import ListUsers from './pages/ListUsers';
@@ -44,7 +45,8 @@ root.render(
                 </Route>
                 {/* Routes avec header */}
                 <Route element={<MainLayout />}>
-                  <Route path="/mesqrcodes" element={<ListQRCodes />} />
+                  <Route path="/mesqrcodes2" element={<ListQRCodes />} />
+                  <Route path="/mesqrcodes" element={<ListQRCodes2 />} />
                   <Route path="/qrcode/:idQRCode" element={<QRCode />} />
                   <Route path="/stats" element={<Statistiques />} />
                   <Route path="/profil" element={<Profile />} />

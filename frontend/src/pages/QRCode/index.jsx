@@ -1,6 +1,6 @@
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { Button } from '@mui/material';
 import {useParams } from 'react-router-dom';
@@ -11,14 +11,10 @@ import '../../style/QRCode.css';
 
 function QRCode() {
   const {idQRCode} = useParams();
-  const [nom, setNom] = React.useState("Nom du QR Code");
-  const [lien, setLien] = React.useState("www.google.com");
-  const [type, setType] = React.useState("Page web");
-  const [dateCreation, setDateCreation] = React.useState("01/02/2025");
-  const [sharelink, setSharelink] = React.useState("gbhrbfgbh");
+  const [qrCode, setQrCode] = useState({id:0,nom:"",lien:"",sharelink:""});
   const qrRef = useRef();
-  const [openQRCodeForm, setOpenQRCodeForm] = React.useState(false);
-  const [openDeleteConfirmation, setOpenDeleteConfirmation] = React.useState(false);
+  const [openQRCodeForm, setOpenQRCodeForm] = useState(false);
+  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
 
   const handleDownload = () => {
     const canvas = qrRef.current.querySelector('canvas');
@@ -44,25 +40,52 @@ function QRCode() {
   const handleCloseDeleteConfirmation = () => {
     setOpenDeleteConfirmation(false);
   };
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+  
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // +1 car janvier = 0
+    const year = date.getFullYear();
+  
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+  
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  }
+
+  useEffect(() => {
+    console.log(qrCode)
+    //const csrfToken = getCookie("csrftoken");
+    fetch(`http://localhost:8000/api/qrcodes/`+idQRCode+"/",{
+      method: "GET",
+      credentials: "include",
+      })
+        .then((response) => response.json()
+        .then(( data ) => {
+          setQrCode(data)
+        })
+        .catch((error) => console.log(error))
+    )
+  }, [])
 
   return (
     <div className='qrcode_page'>
-      <div className='qrcode-container'>
+      <div className='qrcode-container white-container'>
         <IconButton aria-label="retour" href='/mesqrcodes'>
           <ArrowBackIcon />
         </IconButton>
         <div className='qrcode_page_details'>
           <div className='qrcode-page-qrcode'>
           <div ref={qrRef}>
-            <QRCodeCanvas value={window.location.origin+sharelink} size={350} level="H" fgColor='#1e3a84' />
+            <QRCodeCanvas value={window.location.origin+"/link/"+qrCode.sharelink} size={350} level="H" />
           </div>
-          <Button color="secondary" onClick={handleDownload} variant="outlined" size="large">Télécharger</Button>
+          <Button color="secondary" onClick={handleDownload} variant="contained" size="large">Télécharger</Button>
           </div>
           <div className='qrcode_page_infos'>
-            <h2>{nom}</h2>
-            <p>Lien : {lien}</p>
-            <p>Type : {type}</p>
-            <p>Créé le : {dateCreation}</p>
+            <h2>{qrCode.nom}</h2>
+            <p>Lien : {qrCode.lien}</p>
+            <p>Créé le : {formatDate(qrCode.dateCreation)}</p>
             <Button color="secondary" style={{ marginTop: 16}} fullWidth variant="contained" size="large" onClick={handleOpenQRCodeForm}>Modifier</Button>
             <Button color="secondary" style={{ marginTop: 16, marginBottom: 24}} fullWidth variant="contained" size="large" onClick={handleOpenDeleteConfirmation}>Supprimer</Button>
           </div>
@@ -77,7 +100,7 @@ function QRCode() {
       </div>
       <Dialog open={openQRCodeForm} onClose={handleCloseQRCodeForm}>
          <DialogContent style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <QRCodeForm qrcode= {{qrcodeId : idQRCode, nom:nom, lien:lien, type:type}}/>
+            <QRCodeForm qrcode= {qrCode}/>
          </DialogContent>
       </Dialog>
 

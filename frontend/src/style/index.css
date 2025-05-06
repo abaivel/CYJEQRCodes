@@ -39,9 +39,13 @@ html{
 }
 
 .main-layout{
-  background-color: #c2c9e4;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
+}
+
+.main-layout .white-container{
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 #root{
@@ -53,6 +57,10 @@ html{
 h2{
   font-family: Poppins;
   color: #1e3a84;
+}
+
+h3{
+  font-family: Poppins;
 }
 
 p{

@@ -149,7 +149,7 @@ const columns = [
          <h2>Mes QR Codes</h2>
          <Button size="medium" variant="contained" color="secondary" onClick={handleOpenQRCodeForm}>Créer un QR Code</Button>
       </div>
-      <div className='listqrcodes-container-list-qr-codes'>
+      <div className='listqrcodes-container-list-qr-codes white-container' >
          <DataGrid
             rows={rows}
             columns={columns}

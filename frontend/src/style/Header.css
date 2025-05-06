@@ -21,6 +21,12 @@
    font-family: Poppins;
 }
 
+@media (max-width: 770px){
+   .header_menu{
+      display: none;
+   }
+}
+
 .header_menu a{
    text-decoration: none;
 }

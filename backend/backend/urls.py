@@ -15,8 +15,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
+from cyjeqrcodes import views
+#from views import get_csrf, login_view, logout_view, protected_data
+
+router = routers.DefaultRouter()
+router.register(r'qrcodes', views.QRCodeView, 'qrcodes')
+router.register(r'qrcodevisits', views.QRCodeVisitView, 'qrcodevisits')
+router.register(r'users', views.UserView, 'users')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path("api/csrf/", views.get_csrf),
+    path("api/login/", views.login_view),
+    path("api/logout/", views.logout_view),
+    path("api/check-auth/", views.check_auth),
 ]
