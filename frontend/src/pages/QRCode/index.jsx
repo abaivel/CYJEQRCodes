@@ -54,6 +54,31 @@ function QRCode() {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
 
+  function getCookie(name) {
+    const cookieValue = document.cookie
+      .split('; ')
+      .find(row => row.startsWith(name + '='));
+    return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
+  }
+
+  const handleDelete = async (e) => {
+    const csrfToken = getCookie("csrftoken");
+    console.log(csrfToken)
+    const response = await fetch("http://localhost:8000/api/qrcodes/"+idQRCode+"/", {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+    });
+    if (response.ok){
+      window.location.replace('/mesqrcodes');
+    }else{
+      setOpenDeleteConfirmation(false)
+    }
+  };
+
   useEffect(() => {
     console.log(qrCode)
     //const csrfToken = getCookie("csrftoken");
@@ -63,6 +88,7 @@ function QRCode() {
       })
         .then((response) => response.json()
         .then(( data ) => {
+          data.qrcodeId = idQRCode
           setQrCode(data)
         })
         .catch((error) => console.log(error))
@@ -100,7 +126,7 @@ function QRCode() {
       </div>
       <Dialog open={openQRCodeForm} onClose={handleCloseQRCodeForm}>
          <DialogContent style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <QRCodeForm qrcode= {qrCode}/>
+            <QRCodeForm qrcode= {qrCode} setQrCode={setQrCode} setDialogOpen={setOpenQRCodeForm}/>
          </DialogContent>
       </Dialog>
 
@@ -110,7 +136,7 @@ function QRCode() {
               <h3 style={{margin:0}}>Etes vous sûr de vouloir supprimer ce QR Code ? Tous les statistiques associés seront supprimés</h3>
               <div style={{ display: 'flex', gap: 10, marginTop:15 }}>
               <Button color='secondary' variant='outlined' style={{flex:1}}>Annuler</Button>
-              <Button color='secondary' variant='contained' style={{flex:1}}>Confirmer</Button>
+              <Button onClick={handleDelete} color='secondary' variant='contained' style={{flex:1}}>Confirmer</Button>
               </div>
             </div>
          </DialogContent>

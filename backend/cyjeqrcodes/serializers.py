@@ -6,6 +6,7 @@ class QRCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = QRCode
         fields = ('id', 'nom', 'lien', 'sharelink', 'dateCreation', 'user')
+        read_only_fields = ('user', 'sharelink', 'dateCreation')
 
 class QRCodeVisitSerializer(serializers.ModelSerializer):
     class Meta:

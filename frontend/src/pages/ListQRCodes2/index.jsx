@@ -20,6 +20,7 @@ const [qrValue, setQrValue] = useState('');
  const qrRef = useRef();
  const [listQRCodes, setlistQRCodes] = useState([])
  const {loading, setLoading} = useState(true)
+ const {refresh, setRefresh} = useState(0)
 
 function handleOpenQRCodeForm(){
   setOpenQRCodeForm(true);
@@ -91,7 +92,7 @@ useEffect(() => {
 
       <Dialog open={openQRCodeForm} onClose={handleCloseQRCodeForm}>
          <DialogContent style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <QRCodeForm qrcode= {{qrcodeId : 0, nom:"", lien:"", type:""}}/>
+            <QRCodeForm qrcode= {{qrcodeId : 0, nom:"", lien:"", type:""}} setDialogOpen={setOpenQRCodeForm} setQrCode={null} refresh={()=>window.location.reload()}/>
          </DialogContent>
       </Dialog>
     </div>

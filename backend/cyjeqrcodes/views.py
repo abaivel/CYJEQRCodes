@@ -4,10 +4,11 @@ from .serializers import QRCodeSerializer, QRCodeVisitSerializer, UserSerializer
 from .models import QRCode, QRCodeVisit
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.views.decorators.csrf import ensure_csrf_cookie
+from random import sample
 
 @ensure_csrf_cookie
 @api_view(['GET'])
@@ -51,6 +52,10 @@ class QRCodeView(viewsets.ModelViewSet):
       else:
          queryset = QRCode.objects.none()
       return queryset
+   def perform_create(self, serializer):
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    sharelink = ''.join(sample(alphabet, 8))
+    serializer.save(user=self.request.user, sharelink=sharelink)
 
 class QRCodeVisitView(viewsets.ModelViewSet):
    serializer_class = QRCodeVisitSerializer
