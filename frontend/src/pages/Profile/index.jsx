@@ -1,13 +1,13 @@
 import '../../style/Profile.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import * as React from 'react';
+import {useState, useEffect} from 'react';
 
 function Profile() {
-  const [prenom, setPrenom] = React.useState("Prenom");
-  const [nom, setNom] = React.useState("nom");
-  const [email, setEmail] = React.useState("prenom.nom@gmail.com");
-  const [readOnly, setReadOnly] = React.useState(true);
+  const [prenom, setPrenom] = useState("");
+  const [nom, setNom] = useState("");
+  const [email, setEmail] = useState("");
+  const [readOnly, setReadOnly] = useState(true);
 
   function formValid(){
     return prenom !== "" && nom !== "" && email !== ""; 
@@ -19,6 +19,37 @@ function Profile() {
     .find(row => row.startsWith(name + '='));
   return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
 }
+
+useEffect(() => {
+    fetch("http://localhost:8000/api/profile/", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setPrenom(data.first_name)
+        setNom(data.last_name)
+        setEmail(data.email)
+      });
+  }, []);
+
+  const handleSubmit = async () => {
+    const csrfToken = getCookie("csrftoken");
+    console.log(csrfToken)
+    const response = await fetch("http://localhost:8000/api/profile/", {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+      body:JSON.stringify({first_name:prenom, last_name:nom, email:email})
+    });
+    setReadOnly(true)
+  };
 
  const handleLogout = async () => {
   const csrfToken = getCookie("csrftoken");
@@ -79,11 +110,11 @@ function Profile() {
         {readOnly ?
           <div>
             <Button color="secondary" style={{ marginTop: 16}} fullWidth variant="contained" size="large" onClick={()=>setReadOnly(false)}>Modifier</Button>
-            <Button color="secondary" style={{ marginTop: 16}} fullWidth variant="outlined" size="large">Changer son mot de passe</Button>
+            <Button color="secondary" style={{ marginTop: 16}} fullWidth variant="outlined" size="large" onClick={()=>window.location.replace("/change_password")}>Changer son mot de passe</Button>
             <Button color="secondary" style={{ marginTop: 16, marginBottom: 24}} fullWidth variant="outlined" size="large" onClick={handleLogout}>Se déconnecter</Button>
           </div>
           :
-          <Button disabled={!formValid()} color="secondary" style={{ marginTop: 16}} fullWidth variant="contained" size="large" onClick={()=>setReadOnly(true)}>Enregistrer</Button>
+          <Button disabled={!formValid()} color="secondary" style={{ marginTop: 16}} fullWidth variant="contained" size="large" onClick={()=>handleSubmit()}>Enregistrer</Button>
         }
         </div>
     </div>

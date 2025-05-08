@@ -15,6 +15,7 @@ import LoginLayout from './layouts/LoginLayout';
 import MainLayout from './layouts/MainLayout';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import ChangePassword from './pages/ChangePassword';
 
 const theme = createTheme({
   palette: {
@@ -50,6 +51,7 @@ root.render(
                   <Route path="/qrcode/:idQRCode" element={<QRCode />} />
                   <Route path="/stats" element={<Statistiques />} />
                   <Route path="/profil" element={<Profile />} />
+                  <Route path="/change_password" element={<ChangePassword />} />
                   <Route path="/utilisateurs" element={<ListUsers />} />
                 </Route>
                 <Route path="/link/:sharelink" element={<Link/>}/>

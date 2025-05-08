@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .permissions import IsAdminOrSuperAdmin
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import update_session_auth_hash
 from rest_framework.views import APIView
 from rest_framework import status
 from random import sample
@@ -101,7 +102,7 @@ class UserView(viewsets.ModelViewSet):
     print(password)
     serializer.save( password=password)
    
-class CurrentUserView(APIView):
+class AuthorizedView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -109,3 +110,32 @@ class CurrentUserView(APIView):
         return Response({
             "is_staff": user.is_staff or user.is_superuser, 
         })
+    
+class CurrentUserView(APIView):
+   permission_classes = [IsAuthenticated]
+
+   def get(self, request):
+      user = request.user
+      serializer = UserSerializer(user)
+      return Response(serializer.data)
+    
+   def patch(self, request):
+      serializer = UserSerializer(request.user, data=request.data, partial=True)
+      if serializer.is_valid():
+         serializer.save()
+      return Response()
+   
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+   user = request.user
+   old_password = request.data.get("old_password")
+   new_password = request.data.get("new_password")
+
+   if not user.check_password(old_password):
+      return Response({"detail": "Mot de passe actuel incorrect"}, status=400)
+
+   user.set_password(new_password)
+   user.save()
+   update_session_auth_hash(request, user)  # garde l'utilisateur connecté
+   return Response({"detail": "Mot de passe changé avec succès"})
