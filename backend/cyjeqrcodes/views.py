@@ -8,6 +8,10 @@ from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.views.decorators.csrf import ensure_csrf_cookie
+from .permissions import IsAdminOrSuperAdmin
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework import status
 from random import sample
 
 @ensure_csrf_cookie
@@ -55,6 +59,10 @@ class QRCodeView(viewsets.ModelViewSet):
    def perform_create(self, serializer):
     alphabet = "abcdefghijklmnopqrstuvwxyz"
     sharelink = ''.join(sample(alphabet, 8))
+    qrcode_existant = QRCode.objects.filter(sharelink=sharelink)
+    while (len(qrcode_existant)>0):
+      sharelink = ''.join(sample(alphabet, 8))
+      qrcode_existant = QRCode.objects.filter(sharelink=sharelink)
     serializer.save(user=self.request.user, sharelink=sharelink)
 
 class QRCodeVisitView(viewsets.ModelViewSet):
@@ -71,10 +79,33 @@ class QRCodeVisitView(viewsets.ModelViewSet):
          else:
             queryset = QRCodeVisit.objects.none()
       return queryset
+   def create(self, request, *args, **kwargs):
+      sharelink = request.data.get('sharelink')
+      qrcode = QRCode.objects.get(sharelink = sharelink)
+      serializer = self.get_serializer(data=request.data)
+      serializer.is_valid(raise_exception=True)
+      serializer.save(qrcode=qrcode)
+      qrcode_serializer = QRCodeSerializer(qrcode)
+      return Response(qrcode_serializer.data, status=status.HTTP_201_CREATED)
 
 class UserView(viewsets.ModelViewSet):
    serializer_class = UserSerializer
+   permission_classes = [IsAdminOrSuperAdmin]
    #queryset = QRCode.objects.all()
    def get_queryset(self):
       queryset = User.objects.all()
       return queryset
+   def perform_create(self, serializer):
+    alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    password = ''.join(sample(alphabet, 10))
+    print(password)
+    serializer.save( password=password)
+   
+class CurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            "is_staff": user.is_staff or user.is_superuser, 
+        })

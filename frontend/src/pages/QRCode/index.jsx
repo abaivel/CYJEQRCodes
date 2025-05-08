@@ -15,6 +15,7 @@ function QRCode() {
   const qrRef = useRef();
   const [openQRCodeForm, setOpenQRCodeForm] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
+  const [listVisits, setListVisits] = useState([])
 
   const handleDownload = () => {
     const canvas = qrRef.current.querySelector('canvas');
@@ -93,6 +94,19 @@ function QRCode() {
         })
         .catch((error) => console.log(error))
     )
+
+    fetch(`http://localhost:8000/api/qrcodevisits/?qrcode_id=`+idQRCode,{
+      method: "GET",
+      credentials: "include",
+      })
+        .then((response) => response.json()
+        .then(( data ) => {
+          setListVisits(data)
+          console.log(data)
+        })
+        .catch((error) => console.log(error))
+    )
+
   }, [])
 
   return (
@@ -117,6 +131,7 @@ function QRCode() {
           </div>
         </div>
         <h2>Statistiques</h2>
+        <p>{listVisits.length} visites</p>
         <LineChart
           series={[
             { curve: "linear", data: [1, 5, 2, 6, 3, 9.3] },

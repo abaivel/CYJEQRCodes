@@ -15,5 +15,5 @@ class QRCode(models.Model):
     return f'{self.nom}'
 
 class QRCodeVisit(models.Model):
-   dateVisite = models.DateTimeField()
+   dateVisite = models.DateTimeField(default=timezone.now)
    qrcode = models.ForeignKey(QRCode, on_delete=models.CASCADE)

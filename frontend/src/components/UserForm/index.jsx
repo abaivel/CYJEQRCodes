@@ -9,29 +9,78 @@ import ListItemText from '@mui/material/ListItemText';
 import FormHelperText from '@mui/material/FormHelperText';
 import * as React from 'react';
 
-function UserForm({user}) {
-   const [prenom, setPrenom] = React.useState(user.Prenom);
-   const [nom, setNom] = React.useState(user.Nom);
-   const [email, setEmail] = React.useState(user.Email);
-   const [roles, setRoles] = React.useState( user.Roles!="" ? user.Roles.split(", ") : []);
+function UserForm({user, setUser, setDialogOpen, refresh}) {
+   const [prenom, setPrenom] = React.useState(user.first_name);
+   const [nom, setNom] = React.useState(user.last_name);
+   const [email, setEmail] = React.useState(user.email);
+   const [role, setRole] = React.useState( user.role);
    var title = "Modifier un utilisateur";
    const listRoles = ['Utilisateur', 'Administrateur', 'SuperAdministrateur']
-   if (user.UserId==0){
+   if (user.id===0){
       title = "Créer un utilisateur";
    }
-   const handleChangeRoles = (event) => {
-      const {
-        target: { value },
-      } = event;
-      setRoles(
-        // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value,
-      );
-    };
 
    function formValid(){
-      return prenom != "" && nom != "" && email != "" && roles.length>0; 
+      return prenom != "" && nom != "" && email != "" && role != ""; 
    }
+
+   function getCookie(name) {
+      const cookieValue = document.cookie
+        .split('; ')
+        .find(row => row.startsWith(name + '='));
+      return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
+    }
+
+   const handleSubmit = async (e) => {
+      e.preventDefault();
+      var data={}
+      var url=""
+      if (user.id === 0){
+         data = {
+            last_name:nom,
+            first_name:prenom,
+            email:email
+          }
+          url = "http://localhost:8000/api/users/"
+      }else{
+         data = {
+            id : user.id,
+            last_name:nom,
+            first_name:prenom,
+            email:email
+          }
+          url = "http://localhost:8000/api/users/"+user.id+"/"
+      }
+      console.log(data)
+      if (role === "SuperAdministrateur"){
+         data.is_superuser = true
+      }else if (role === "Administrateur"){
+         data.is_staff = true
+         data.is_superuser = false
+      }else{
+         data.is_staff = false
+         data.is_superuser = false
+      }
+      const csrfToken = getCookie("csrftoken");
+      console.log(csrfToken)
+      const response = await fetch(url, {
+        method: user.id===0 ? "POST" : "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok){
+         if (setUser!=null){
+            setUser(data)
+         }else{
+            refresh()
+         }
+         setDialogOpen(false)
+      }
+    };
 
    return (
      <div>
@@ -70,31 +119,28 @@ function UserForm({user}) {
          helperText={email === "" && "Email obligatoire"}
          type='email' 
          margin="normal" />
-      <FormControl sx={{ mt: 2 }} fullWidth error={roles.length==0} required>
-      <InputLabel id="demo-simple-select-label">Rôles</InputLabel>
+      <FormControl sx={{ mt: 2 }} fullWidth error={role === ""} required>
+      <InputLabel id="demo-simple-select-label">Rôle</InputLabel>
       
       <Select
          labelId="demo-simple-select-label"
          id="demo-simple-select"
-         label="Roles"
+         label="Role"
          fullWidth
          color="secondary"
-         value={roles}
+         value={role}
          required
-         onChange={handleChangeRoles}
-         renderValue={(selected) => selected.join(', ')}
-         multiple
+         onChange={(event)=>setRole(event.target.value)}
       >
          {listRoles.map((r) => (
             <MenuItem key={r} value={r}>
-              <Checkbox checked={roles.includes(r)} />
               <ListItemText primary={r} />
             </MenuItem>
           ))}
       </Select>
-      {roles.length==0 && <FormHelperText>Rôle obligatoire</FormHelperText>}
+      {role==="" && <FormHelperText>Rôle obligatoire</FormHelperText>}
       </FormControl>
-      <Button disabled={!formValid()} color="secondary" style={{ marginTop: 16, marginBottom: 24}} fullWidth variant="contained" size="large">{user.UserId==0 ? "Créer" : "Modifier"}</Button>
+      <Button onClick={handleSubmit} disabled={!formValid()} color="secondary" style={{ marginTop: 16, marginBottom: 24}} fullWidth variant="contained" size="large">{user.id==0 ? "Créer" : "Modifier"}</Button>
      </div>
    );
  }

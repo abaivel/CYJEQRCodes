@@ -1,8 +1,29 @@
 import '../../style/Header.css';
 import logo from '../../assets/images/white_logo_cyje2.png'
 import { NavLink } from 'react-router-dom'
+import React, { useRef, useEffect, useState } from 'react';
 
 function Header() {
+  const [isStaff, setIsStaff] = useState(false)
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/authorized/", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.is_staff) {
+          setIsStaff(true);
+        } else {
+          setIsStaff(false);
+        }
+      });
+  }, []);
+
   return (
     <div className="header_container">
       <img src={logo} alt="logo de CYJE" className='header_logo_cyje'/>
@@ -19,12 +40,14 @@ function Header() {
         >
           Statistiques
         </NavLink>
-        <NavLink 
-          to="/utilisateurs" 
-          className={({ isActive }) => isActive ? "header_link active" : "header_link"}
-        >
-          Utilisateurs
-        </NavLink>
+        {isStaff &&
+          <NavLink 
+            to="/utilisateurs" 
+            className={({ isActive }) => isActive ? "header_link active" : "header_link"}
+          >
+            Utilisateurs
+          </NavLink>
+        }
         <NavLink 
           to="/profil" 
           className={({ isActive }) => isActive ? "header_link active" : "header_link"}
