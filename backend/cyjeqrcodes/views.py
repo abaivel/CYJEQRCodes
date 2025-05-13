@@ -53,7 +53,7 @@ class QRCodeView(viewsets.ModelViewSet):
    #queryset = QRCode.objects.all()
    def get_queryset(self):
       if (self.request.user.is_authenticated):
-         queryset = QRCode.objects.filter(user_id = self.request.user.id)
+         queryset = QRCode.objects.filter(user_id = self.request.user.id).order_by('-dateCreation')
       else:
          queryset = QRCode.objects.none()
       return queryset

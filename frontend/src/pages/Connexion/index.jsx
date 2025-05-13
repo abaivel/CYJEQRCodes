@@ -92,7 +92,8 @@ function Connexion() {
           label="Mot de passe" 
           variant="outlined" 
           margin="normal" />
-        <Button color="secondary" onClick={handleLogin} style={{ marginTop: 16, marginBottom: 24}} fullWidth variant="contained" size="large">Se connecter</Button>
+        <Button color="secondary" onClick={handleLogin} style={{ marginTop: 16, marginBottom: 16}} fullWidth variant="contained" size="large">Se connecter</Button>
+        <p style={{textAlign:"center", fontSize:15}}>Si vous n'avez pas de compte, vous devez demander à un administrateur de vous en créer un</p>
       </div>
     </div>
   );

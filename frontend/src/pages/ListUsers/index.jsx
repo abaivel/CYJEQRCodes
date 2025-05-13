@@ -113,7 +113,7 @@ function ListUsers() {
         filterable: false,
         renderCell: (params) => (
           <div>
-           <Button variant="contained" onClick={()=>handleOpen(params.row)}>
+           <Button variant="contained" disabled={params.row.is_connected} onClick={()=>handleOpen(params.row)}>
            Modifier
          </Button>
          </div>
@@ -127,7 +127,7 @@ function ListUsers() {
           filterable: false,
           renderCell: (params) => (
             <div>
-            <Button variant="contained" onClick={()=>handleOpenDeleteConfirmation(params.row)}>
+            <Button variant="contained" disabled={params.row.is_connected} onClick={()=>handleOpenDeleteConfirmation(params.row)}>
             Supprimer
           </Button>
           </div>
@@ -174,7 +174,7 @@ function ListUsers() {
           <div>
             <h3 style={{margin:0}}>Etes vous sûr de vouloir supprimer cet utilisateur ? Tous ses QR Codes et statistiques seront supprimés</h3>
             <div style={{ display: 'flex', gap: 10, marginTop:15 }}>
-            <Button color='secondary' variant='outlined' style={{flex:1}}>Annuler</Button>
+            <Button color='secondary' variant='outlined' style={{flex:1}} onClick={handleCloseDeleteConfirmation}>Annuler</Button>
             <Button onClick={handleDelete} color='secondary' variant='contained' style={{flex:1}}>Confirmer</Button>
             </div>
           </div>

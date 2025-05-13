@@ -19,7 +19,8 @@ function ListQRCodes() {
 const [qrValue, setQrValue] = useState('');
  const qrRef = useRef();
  const [listQRCodes, setlistQRCodes] = useState([])
- const {loading, setLoading} = useState(true)
+ const [listQRCodesFiltres, setlistQRCodesFiltres] = useState([])
+ const [loading, setLoading] = useState(true)
  const {refresh, setRefresh} = useState(0)
 
 function handleOpenQRCodeForm(){
@@ -35,6 +36,12 @@ const handleCloseQRCodeForm = () => {
     .split('; ')
     .find(row => row.startsWith(name + '='));
   return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
+}
+
+function search(event){
+  let txt = event.target.value;
+  console.log(txt)
+  setlistQRCodesFiltres(listQRCodes.filter((qr)=> qr.nom.includes(txt)))
 }
  /*const rows = [
    {id:1, Nom: 'QRCode1', Lien: 'www.google.com', sharelink: 'www.google.com', nbVisites:50, DateCreation: '2025-04-02', Type: 'Formulaire', qrcodeId: '252'},
@@ -57,6 +64,8 @@ useEffect(() => {
       .then((response) => response.json()
       .then(( data ) => {
         setlistQRCodes(data)
+        setlistQRCodesFiltres(data)
+        setLoading(false)
       })
       .catch((error) => console.log(error))
   )
@@ -71,6 +80,7 @@ useEffect(() => {
          <TextField style={{width: 300}}
         variant="outlined"
         placeholder="Tapez le nom d'un QR Code"
+        onChange={search}
         slotProps={{
           input: {
             startAdornment: (
@@ -84,10 +94,10 @@ useEffect(() => {
          <Button size="medium" variant="contained" color="secondary" onClick={handleOpenQRCodeForm}>Créer un QR Code</Button>
       </div>
       <div className='listqrcodes-container-list-qr-codes2' >
-        
-         {listQRCodes?.map((qr) => (
+         {listQRCodesFiltres?.map((qr) => (
                   <QRCodeCard key={qr.id} qrcode={qr}></QRCodeCard>
                ))}
+          {listQRCodes.length===0 && !loading ? <p>Vous n'avez pas de QR Codes</p> : null}
       </div>
 
       <Dialog open={openQRCodeForm} onClose={handleCloseQRCodeForm}>

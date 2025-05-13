@@ -6,6 +6,7 @@ function Link() {
   const {sharelink} = useParams();
   const [loading, setLoading] = useState(true)
   const [link, setLink] = useState("")
+  const [ignore, setIgnore] = useState(false)
 
   function getCookie(name) {
     const cookieValue = document.cookie
@@ -17,6 +18,7 @@ function Link() {
   useEffect(() => {
     const csrfToken = getCookie("csrftoken");
     console.log(sharelink)
+    if (!ignore){
     fetch("http://localhost:8000/api/qrcodevisits/", {
       method: "POST",
       headers: {
@@ -28,20 +30,21 @@ function Link() {
         sharelink: sharelink
       }),
     })
-    .then((response) => response.json()
+    .then((response) => response.json())
       .then(( data ) => {
         console.log(data)
         setLoading(false)
         setLink(data.lien)
         //window.location.replace(data.link);
       })
-      .catch((error) => console.log(error))
-    )
+      .catch((error) => console.log(error));
+    }
+      setIgnore(true)
     }, [])
 
     if (!loading && link !== undefined && link.length>0){
       console.log(link)
-      window.location=link;
+      //window.location=link;
     }
 
    return (

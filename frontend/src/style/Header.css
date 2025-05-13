@@ -21,13 +21,38 @@
    font-family: Poppins;
 }
 
+.header-icon-open-drawer{
+   color:white !important;
+}
+
+@media (min-width: 770px){
+   .header-icon-open-drawer{
+      display: none !important;
+   }
+}
+
 @media (max-width: 770px){
    .header_menu{
       display: none;
    }
+
+   .header-icon-open-drawer{
+      display: block;
+   }
 }
 
-.header_menu a{
+.drawer_logo_cyje{
+   height: auto;
+   width: 100%;
+   margin-bottom: 20px;
+}
+
+.header-drawer{
+   background-color: #1e3a84;
+   height: 100%;
+}
+
+.header_menu a, .header-drawer a{
    text-decoration: none;
 }
 

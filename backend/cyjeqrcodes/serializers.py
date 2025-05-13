@@ -16,9 +16,11 @@ class QRCodeVisitSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     role = serializers.SerializerMethodField()
+    is_connected = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'role', 'is_staff', 'is_superuser')
+        fields = ('id', 'first_name', 'last_name', 'email', 'role', 'is_staff', 'is_superuser', 'is_connected')
 
     def get_role(self, obj):
         if obj.is_superuser:
@@ -26,3 +28,9 @@ class UserSerializer(serializers.ModelSerializer):
         elif obj.is_staff:
             return "Administrateur"
         return "Utilisateur"
+    
+    def get_is_connected(self, obj):
+        request = self.context.get('request', None)
+        if request and request.user.is_authenticated:
+            return obj == request.user
+        return False

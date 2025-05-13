@@ -150,7 +150,7 @@ function QRCode() {
             <div>
               <h3 style={{margin:0}}>Etes vous sûr de vouloir supprimer ce QR Code ? Tous les statistiques associés seront supprimés</h3>
               <div style={{ display: 'flex', gap: 10, marginTop:15 }}>
-              <Button color='secondary' variant='outlined' style={{flex:1}}>Annuler</Button>
+              <Button color='secondary' variant='outlined' style={{flex:1}} onClick={handleCloseDeleteConfirmation}>Annuler</Button>
               <Button onClick={handleDelete} color='secondary' variant='contained' style={{flex:1}}>Confirmer</Button>
               </div>
             </div>
