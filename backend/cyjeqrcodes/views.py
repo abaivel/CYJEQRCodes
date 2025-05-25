@@ -16,7 +16,8 @@ from rest_framework import status
 from random import sample
 from django.core.mail import send_mail
 from django.conf import settings
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 @ensure_csrf_cookie
 @api_view(['GET'])
@@ -167,18 +168,25 @@ def change_password(request):
    update_session_auth_hash(request, user)  # garde l'utilisateur connecté
    return Response({"detail": "Mot de passe changé avec succès"})
 
-
-
 def send_mail_user_creation(address, password):
-   context = {}
-   subject = "Création de ton compte CYJE QR Codes"
-   message = "Ton mot de passe :" + password
+    context = {
+        'password': password,
+    }
 
-   try:
-      msg = EmailMessage(subject,
-                       message, settings.EMAIL_HOST_USER, [address])
-      msg.send()
-      context['result'] = 'Email sent successfully'
-   except Exception as e:
-         context['result'] = f'Error sending email: {e}'
-   print(context)
+    subject = "Création de ton compte CYJE QR Codes"
+    from_email = settings.EMAIL_HOST_USER
+    to = [address]
+
+    # Texte brut au cas où le client mail ne lit pas le HTML
+    text_content = f"Un compte a été créé pour toi sur le site CYJE QR Codes. Connecte toi avec ton adresse mail et ce mot de passe : {password}"
+
+    # Contenu HTML rendu depuis un template
+    html_content = render_to_string('email_creation_compte.html', context)
+
+    try:
+        msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+        print({'result': 'Email sent successfully'})
+    except Exception as e:
+        print({'result': f'Error sending email: {e}'})
