@@ -1,19 +1,16 @@
 import CircularProgress from '@mui/material/CircularProgress';
 import {useParams } from 'react-router-dom';
 import {useEffect, useState} from 'react';
+import { getCookie } from '../../utils/cookies';
 
 function Link() {
   const {sharelink} = useParams();
   const [loading, setLoading] = useState(true)
   const [link, setLink] = useState("")
   const [ignore, setIgnore] = useState(false)
-
-  function getCookie(name) {
-    const cookieValue = document.cookie
-      .split('; ')
-      .find(row => row.startsWith(name + '='));
-    return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
-  }
+  const queryParameters = new URLSearchParams(window.location.search)
+  const lieu = queryParameters.get("lieu")
+  const design = queryParameters.get("design")
 
   useEffect(() => {
     const csrfToken = getCookie("csrftoken");
@@ -27,7 +24,9 @@ function Link() {
       },
       credentials: "include",
       body: JSON.stringify({
-        sharelink: sharelink
+        sharelink: sharelink,
+        lieu : lieu,
+        design : design
       }),
     })
     .then((response) => response.json())
@@ -35,7 +34,6 @@ function Link() {
         console.log(data)
         setLoading(false)
         setLink(data.lien)
-        //window.location.replace(data.link);
       })
       .catch((error) => console.log(error));
     }
@@ -44,7 +42,7 @@ function Link() {
 
     if (!loading && link !== undefined && link.length>0){
       console.log(link)
-      //window.location=link;
+      window.location=link;
     }
 
    return (

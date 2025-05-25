@@ -4,10 +4,10 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
-import Checkbox from '@mui/material/Checkbox';
 import ListItemText from '@mui/material/ListItemText';
 import FormHelperText from '@mui/material/FormHelperText';
 import * as React from 'react';
+import { getCookie } from '../../utils/cookies';
 
 function UserForm({user, setUser, setDialogOpen, refresh}) {
    const [prenom, setPrenom] = React.useState(user.first_name);
@@ -21,15 +21,8 @@ function UserForm({user, setUser, setDialogOpen, refresh}) {
    }
 
    function formValid(){
-      return prenom != "" && nom != "" && email != "" && role != ""; 
+      return prenom !== "" && nom !== "" && email !== "" && role !== ""; 
    }
-
-   function getCookie(name) {
-      const cookieValue = document.cookie
-        .split('; ')
-        .find(row => row.startsWith(name + '='));
-      return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
-    }
 
    const handleSubmit = async (e) => {
       e.preventDefault();
@@ -140,7 +133,7 @@ function UserForm({user, setUser, setDialogOpen, refresh}) {
       </Select>
       {role==="" && <FormHelperText>Rôle obligatoire</FormHelperText>}
       </FormControl>
-      <Button onClick={handleSubmit} disabled={!formValid()} color="secondary" style={{ marginTop: 16, marginBottom: 24}} fullWidth variant="contained" size="large">{user.id==0 ? "Créer" : "Modifier"}</Button>
+      <Button onClick={handleSubmit} disabled={!formValid()} color="secondary" style={{ marginTop: 16, marginBottom: 24}} fullWidth variant="contained" size="large">{user.id===0 ? "Créer" : "Modifier"}</Button>
      </div>
    );
  }

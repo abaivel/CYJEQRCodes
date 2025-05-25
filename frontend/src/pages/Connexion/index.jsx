@@ -2,6 +2,7 @@ import '../../style/Connexion.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useState, useEffect} from 'react';
+import { getCookie } from '../../utils/cookies';
 
 function Connexion() {
   const [email, setEmail] = useState("");
@@ -10,9 +11,8 @@ function Connexion() {
   const [connexionSucceed, setConnexionSucceed] = useState(null);
 
   useEffect(() => {
-    // Récupérer le token CSRF au premier chargement
     fetch("api/csrf/", {
-      credentials: "include", // très important pour les cookies !
+      credentials: "include",
     });
     const checkAuth = async () => {
       const response = await fetch("http://localhost:8000/api/check-auth/", {
@@ -31,15 +31,8 @@ function Connexion() {
     checkAuth();
   }, []);
 
-  function getCookie(name) {
-    const cookieValue = document.cookie
-      .split('; ')
-      .find(row => row.startsWith(name + '='));
-    return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
-  }
-
   if (isAuthenticated === null) {
-    return <div>Chargement...</div>;
+    return <div></div>;
   }else if (isAuthenticated){
     window.location.replace('/mesqrcodes');
   }

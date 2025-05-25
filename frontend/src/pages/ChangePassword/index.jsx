@@ -1,7 +1,8 @@
 import '../../style/Profile.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
+import { getCookie } from '../../utils/cookies';
 
 function ChangePassword() {
    const [oldPassword, setOldPassword] = useState("");
@@ -12,13 +13,6 @@ function ChangePassword() {
   function formValid(){
     return oldPassword !== "" && newPassword !== "" && newPasswordConfirm !== "" && newPassword.length>=8 && newPassword === newPasswordConfirm; 
  }
-
- function getCookie(name) {
-  const cookieValue = document.cookie
-    .split('; ')
-    .find(row => row.startsWith(name + '='));
-  return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
-}
 
 const handleChangePassword = async (e) => {
    e.preventDefault();
@@ -37,7 +31,7 @@ const handleChangePassword = async (e) => {
      }),
    });
    if (!response.ok){
-
+    setErrorMessage("L'ancien mot de passe n'est pas correct")
    }
    window.location.replace("/profil")
 }

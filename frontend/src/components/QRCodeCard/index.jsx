@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Button } from '@mui/material';
 import { Dialog, DialogContent } from '@mui/material';
 import {useRef, useState} from 'react';
+import { getCookie } from '../../utils/cookies';
 
 
 
@@ -54,13 +55,6 @@ function QRCodeCard({qrcode}) {
       setOpenDeleteConfirmation(false);
     };
 
-    function getCookie(name) {
-      const cookieValue = document.cookie
-        .split('; ')
-        .find(row => row.startsWith(name + '='));
-      return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
-    }
-
     const handleDelete = async (e) => {
       e.preventDefault()
       e.stopPropagation()
@@ -104,11 +98,12 @@ function QRCodeCard({qrcode}) {
       </div>
       <div className='qrcode-card-content'>
          <div className='qrcode-card-qrcode' ref={qrRef}>
-         <QRCodeCanvas value={qrcode.sharelink}
+         <QRCodeCanvas value={window.location.origin+"/link/"+qrcode.sharelink}
                         size={256}
                         level="H" // Haute qualité de correction
          />
          </div>
+         
       </div>
       <Dialog open={openDeleteConfirmation} onClose={handleCloseDeleteConfirmation}>
          <DialogContent style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

@@ -1,17 +1,27 @@
 from rest_framework import serializers
-from .models import QRCode, QRCodeVisit
+from .models import QRCode, QRCodeVisit, LieuQRCode, DesignQRCode
 from django.contrib.auth.models import User
 
 class QRCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = QRCode
-        fields = ('id', 'nom', 'lien', 'sharelink', 'dateCreation', 'user')
+        fields = ('id', 'nom', 'lien', 'sharelink', 'dateCreation', 'user', 'type')
         read_only_fields = ('user', 'sharelink', 'dateCreation')
+
+class LieuQRCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LieuQRCode
+        fields = ("id","nom","qrcode")
+
+class DesignQRCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DesignQRCode
+        fields = ("id","nom","qrcode")
 
 class QRCodeVisitSerializer(serializers.ModelSerializer):
     class Meta:
         model = QRCodeVisit
-        fields = ('id', 'qrcode', 'dateVisite')
+        fields = ('id', 'qrcode', 'dateVisite', 'lieu', 'design')
         read_only_fields = ('qrcode', 'dateVisite')
 
 class UserSerializer(serializers.ModelSerializer):

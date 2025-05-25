@@ -1,0 +1,25 @@
+.stats-pies-container{
+   display: flex;
+}
+
+.stats-line-not-displayed{
+   text-align: center;
+}
+
+@media (max-width: 750px){
+   .stats-pies-container{
+      flex-direction: column;
+   }
+
+   .stats-line-container{
+      display: none;
+   }
+
+}
+
+@media (min-width: 750px){
+   .stats-line-not-displayed{
+      display: none;
+   }
+
+}

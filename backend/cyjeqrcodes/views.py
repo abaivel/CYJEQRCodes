@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import QRCodeSerializer, QRCodeVisitSerializer, UserSerializer
-from .models import QRCode, QRCodeVisit
+from .serializers import QRCodeSerializer, QRCodeVisitSerializer, UserSerializer, LieuQRCodeSerializer, DesignQRCodeSerializer
+from .models import QRCode, QRCodeVisit, LieuQRCode, DesignQRCode
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view, permission_classes, action
@@ -14,6 +14,9 @@ from django.contrib.auth import update_session_auth_hash
 from rest_framework.views import APIView
 from rest_framework import status
 from random import sample
+from django.core.mail import send_mail
+from django.conf import settings
+from django.core.mail import EmailMessage
 
 @ensure_csrf_cookie
 @api_view(['GET'])
@@ -50,7 +53,6 @@ def check_auth(request):
 
 class QRCodeView(viewsets.ModelViewSet):
    serializer_class = QRCodeSerializer
-   #queryset = QRCode.objects.all()
    def get_queryset(self):
       if (self.request.user.is_authenticated):
          queryset = QRCode.objects.filter(user_id = self.request.user.id).order_by('-dateCreation')
@@ -66,13 +68,33 @@ class QRCodeView(viewsets.ModelViewSet):
       qrcode_existant = QRCode.objects.filter(sharelink=sharelink)
     serializer.save(user=self.request.user, sharelink=sharelink)
 
+class LieuQRCodeView(viewsets.ModelViewSet):
+   serializer_class = LieuQRCodeSerializer
+   def get_queryset(self):
+      if self.action == 'list':
+         id_qrcode = self.request.query_params.get('idqrcode')
+         if id_qrcode is not None:
+            return LieuQRCode.objects.filter(qrcode_id=id_qrcode)
+         return LieuQRCode.objects.none()
+      return LieuQRCode.objects.all()
+
+class DesignQRCodeView(viewsets.ModelViewSet):
+   serializer_class = DesignQRCodeSerializer
+   def get_queryset(self):
+      if self.action == 'list':
+         id_qrcode = self.request.query_params.get('idqrcode')
+         if id_qrcode is not None:
+            return DesignQRCode.objects.filter(qrcode_id=id_qrcode)
+         return DesignQRCode.objects.none()
+      return DesignQRCode.objects.all()
+
+
 class QRCodeVisitView(viewsets.ModelViewSet):
    serializer_class = QRCodeVisitSerializer
-   #queryset = QRCodeVisit.objects.all()
    def get_queryset(self):
       qrcode_id = self.request.GET.get('qrcode_id')
       if (qrcode_id is not None):
-         queryset = QRCodeVisit.objects.filter(qrcode_id = qrcode_id)
+         queryset = QRCodeVisit.objects.filter(qrcode_id = qrcode_id).order_by('dateVisite')
       else :
          user_id = self.request.GET.get('user_id')
          if (user_id is not None):
@@ -82,6 +104,7 @@ class QRCodeVisitView(viewsets.ModelViewSet):
       return queryset
    def create(self, request, *args, **kwargs):
       sharelink = request.data.get('sharelink')
+      print(sharelink)
       qrcode = QRCode.objects.get(sharelink = sharelink)
       serializer = self.get_serializer(data=request.data)
       serializer.is_valid(raise_exception=True)
@@ -92,7 +115,6 @@ class QRCodeVisitView(viewsets.ModelViewSet):
 class UserView(viewsets.ModelViewSet):
    serializer_class = UserSerializer
    permission_classes = [IsAdminOrSuperAdmin]
-   #queryset = QRCode.objects.all()
    def get_queryset(self):
       queryset = User.objects.all()
       return queryset
@@ -100,7 +122,12 @@ class UserView(viewsets.ModelViewSet):
     alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     password = ''.join(sample(alphabet, 10))
     print(password)
-    serializer.save( password=password)
+    print("email : "+self.request.data.get("email"))
+    send_mail_user_creation(self.request.data.get("email"), password)
+    user = serializer.save(username=self.request.data.get("email"))
+
+    user.set_password(password)
+    user.save()
    
 class AuthorizedView(APIView):
     permission_classes = [IsAuthenticated]
@@ -139,3 +166,19 @@ def change_password(request):
    user.save()
    update_session_auth_hash(request, user)  # garde l'utilisateur connecté
    return Response({"detail": "Mot de passe changé avec succès"})
+
+
+
+def send_mail_user_creation(address, password):
+   context = {}
+   subject = "Création de ton compte CYJE QR Codes"
+   message = "Ton mot de passe :" + password
+
+   try:
+      msg = EmailMessage(subject,
+                       message, settings.EMAIL_HOST_USER, [address])
+      msg.send()
+      context['result'] = 'Email sent successfully'
+   except Exception as e:
+         context['result'] = f'Error sending email: {e}'
+   print(context)

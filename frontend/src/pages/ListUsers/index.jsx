@@ -5,6 +5,7 @@ import {frFR} from '@mui/x-data-grid/locales';
 import UserForm from '../../components/UserForm';
 import {useState, useEffect} from 'react';
 import { Dialog, DialogContent } from '@mui/material';
+import { getCookie } from '../../utils/cookies';
 
 function ListUsers() {
    const [open, setOpen] = useState(false);
@@ -32,13 +33,6 @@ function ListUsers() {
   const handleCloseDeleteConfirmation = () => {
     setOpenDeleteConfirmation(false);
   };
-
-  function getCookie(name) {
-    const cookieValue = document.cookie
-      .split('; ')
-      .find(row => row.startsWith(name + '='));
-    return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
-  }
 
   useEffect(() => {
     const csrfToken = getCookie("csrftoken");
@@ -83,32 +77,32 @@ function ListUsers() {
       headerName: 'Prénom', 
       description:"Prénom de l'utilisateur",
       sortable:true,
-      flex:1
+      width: 200,
     },
     {
        field: 'last_name',
        headerName: 'Nom',
        description: "Nom de l'utilisateur",
        sortable: true,
-       flex: 1
+       width: 200,
     },
     {
       field: 'email',
       headerName: 'Email',
       description: "Email de l'utilisateur",
       sortable: true,
-      flex: 1
+      width: 250,
    },
    {
       field: 'role',
       headerName: 'Rôles',
       description: "Rôles de l'utilisateur",
-      flex: 1
+      width: 200,
   },
   {
         field: 'modifier',
         headerName: '',
-        flex:0.5,
+        width: 150,
         sortable: false,
         filterable: false,
         renderCell: (params) => (
@@ -122,7 +116,7 @@ function ListUsers() {
      {
           field: 'supprimer',
           headerName: '',
-          flex:0.5,
+          width: 150,
           sortable: false,
           filterable: false,
           renderCell: (params) => (

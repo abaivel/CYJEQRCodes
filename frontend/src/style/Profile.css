@@ -4,12 +4,14 @@
    display: flex;
    flex: 1;
    align-items: center;
+   padding: 10px;
  }
  
  .div-profile-page-form-container{
    background-color: white;
    border-radius: 50px;
-   width: 30%;
+   width: 450px;
+   max-width: 100%;
    margin: auto;
    padding: 20px;
  }

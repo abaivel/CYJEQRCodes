@@ -41,12 +41,6 @@ function Header() {
           className={({ isActive }) => isActive ? "header_link active" : "header_link"}>
           Mes QR Codes
         </NavLink>
-        <NavLink 
-          to="/stats" 
-          className={({ isActive }) => isActive ? "header_link active" : "header_link"}
-        >
-          Statistiques
-        </NavLink>
         {isStaff &&
           <NavLink 
             to="/utilisateurs" 
@@ -76,13 +70,6 @@ function Header() {
               to="/mesqrcodes" 
               className={({ isActive }) => isActive ? "header_link active" : "header_link"}>
               Mes QR Codes
-            </NavLink>
-          </ListItem>
-          <ListItem>
-            <NavLink 
-              to="/stats" 
-              className={({ isActive }) => isActive ? "header_link active" : "header_link"}>
-              Statistiques
             </NavLink>
           </ListItem>
           {isStaff &&

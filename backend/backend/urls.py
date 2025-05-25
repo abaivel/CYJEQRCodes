@@ -24,6 +24,8 @@ router = routers.DefaultRouter()
 router.register(r'qrcodes', views.QRCodeView, 'qrcodes')
 router.register(r'qrcodevisits', views.QRCodeVisitView, 'qrcodevisits')
 router.register(r'users', views.UserView, 'users')
+router.register(r'lieuqrcode', views.LieuQRCodeView, 'lieuqrcode')
+router.register(r'designqrcode', views.DesignQRCodeView, 'designqrcode')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -11,7 +11,8 @@
 .div_connexion_page_form_container{
   background-color: white;
   border-radius: 50px;
-  width: 30%;
+  width: 450px;
+  max-width: 100%;
   margin: auto;
   padding: 20px;
 }

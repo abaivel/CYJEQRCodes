@@ -25,13 +25,13 @@
    color:white !important;
 }
 
-@media (min-width: 770px){
+@media (min-width: 650px){
    .header-icon-open-drawer{
       display: none !important;
    }
 }
 
-@media (max-width: 770px){
+@media (max-width: 650px){
    .header_menu{
       display: none;
    }

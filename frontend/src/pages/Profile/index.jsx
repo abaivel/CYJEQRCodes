@@ -2,23 +2,19 @@ import '../../style/Profile.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useState, useEffect} from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import { getCookie } from '../../utils/cookies';
 
 function Profile() {
   const [prenom, setPrenom] = useState("");
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
   const [readOnly, setReadOnly] = useState(true);
+  const [openSnackbarError, setOpenSnackbarError] = useState(false)
 
   function formValid(){
     return prenom !== "" && nom !== "" && email !== ""; 
  }
-
- function getCookie(name) {
-  const cookieValue = document.cookie
-    .split('; ')
-    .find(row => row.startsWith(name + '='));
-  return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
-}
 
 useEffect(() => {
     fetch("http://localhost:8000/api/profile/", {
@@ -33,6 +29,10 @@ useEffect(() => {
         setPrenom(data.first_name)
         setNom(data.last_name)
         setEmail(data.email)
+      })
+      .catch((error) => {
+        console.log(error)
+         setOpenSnackbarError(true)
       });
   }, []);
 
@@ -48,6 +48,9 @@ useEffect(() => {
       },
       body:JSON.stringify({first_name:prenom, last_name:nom, email:email})
     });
+    if (!response.ok){
+      setOpenSnackbarError(true)
+    }
     setReadOnly(true)
   };
 
@@ -64,6 +67,8 @@ useEffect(() => {
 
   if (response.ok) {
     window.location.replace('/');
+  }else{
+    setOpenSnackbarError(true)
   }
 };
 
@@ -71,7 +76,7 @@ useEffect(() => {
    return (
     <div className='div-profile-page'>
       <div className="div-profile-page-form-container white-container">
-        <h2 className='profile-page-title'>Connexion</h2>
+        <h2 className='profile-page-title'>Mon compte</h2>
         <TextField value={prenom} 
           onChange={(event)=>setPrenom(event.target.value)} 
           error={prenom === ""} 
@@ -117,6 +122,13 @@ useEffect(() => {
           <Button disabled={!formValid()} color="secondary" style={{ marginTop: 16}} fullWidth variant="contained" size="large" onClick={()=>handleSubmit()}>Enregistrer</Button>
         }
         </div>
+        <Snackbar
+         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={openSnackbarError}
+          autoHideDuration={5000}
+          onClose={()=>setOpenSnackbarError(false)}
+          message="Il y a eu une erreur"
+        />
     </div>
    );
  }
