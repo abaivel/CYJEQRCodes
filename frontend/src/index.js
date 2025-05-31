@@ -14,6 +14,7 @@ import MainLayout from './layouts/MainLayout';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import ChangePassword from './pages/ChangePassword';
+import Error from './pages/Error';
 
 const theme = createTheme({
   palette: {
@@ -48,6 +49,7 @@ root.render(
                   <Route path="/profil" element={<Profile />} />
                   <Route path="/change_password" element={<ChangePassword />} />
                   <Route path="/utilisateurs" element={<ListUsers />} />
+                  <Route path="*" element={<Error/>}/>
                 </Route>
                 <Route path="/link/:sharelink" element={<Link/>}/>
             </Routes>
