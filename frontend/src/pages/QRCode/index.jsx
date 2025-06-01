@@ -108,7 +108,7 @@ function handleOpenListDesign(){
 
   const handleDelete = async (e) => {
     const csrfToken = getCookie("csrftoken");
-    const response = await fetch("http://localhost:8000/api/qrcodes/"+idQRCode+"/", {
+    const response = await fetch("/api/qrcodes/"+idQRCode+"/", {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -125,7 +125,7 @@ function handleOpenListDesign(){
 
   useEffect(() => {
     async function fetchData(){
-      let responseGetQrCode = await fetch(`http://localhost:8000/api/qrcodes/`+idQRCode+"/",{
+      let responseGetQrCode = await fetch(`/api/qrcodes/`+idQRCode+"/",{
         method: "GET",
         credentials: "include",
         })
@@ -134,21 +134,21 @@ function handleOpenListDesign(){
       setQrCode(dataGetQrCode)
       
 
-      let responseGetVisits = await fetch(`http://localhost:8000/api/qrcodevisits/?qrcode_id=`+idQRCode,{
+      let responseGetVisits = await fetch(`/api/qrcodevisits/?qrcode_id=`+idQRCode,{
         method: "GET",
         credentials: "include",
         })
       let dataGetVisits = await responseGetVisits.json()
       setListVisits(dataGetVisits)
 
-      let responseGetDesignList = await fetch(`http://localhost:8000/api/designqrcode/?idqrcode=`+idQRCode,{
+      let responseGetDesignList = await fetch(`/api/designqrcode/?idqrcode=`+idQRCode,{
       method: "GET",
       credentials: "include",
       })
       let dataGetDesignList = await responseGetDesignList.json()
       setListDesign(dataGetDesignList)
 
-      let responseGetLieuList = await fetch(`http://localhost:8000/api/lieuqrcode/?idqrcode=`+idQRCode,{
+      let responseGetLieuList = await fetch(`/api/lieuqrcode/?idqrcode=`+idQRCode,{
       method: "GET",
       credentials: "include",
       })

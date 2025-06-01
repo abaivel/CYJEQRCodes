@@ -16,7 +16,7 @@ function Link() {
     const csrfToken = getCookie("csrftoken");
     console.log(sharelink)
     if (!ignore){
-    fetch("http://localhost:8000/api/qrcodevisits/", {
+    fetch("/api/qrcodevisits/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -16,7 +16,7 @@ function EditListDesign({listDesign, setListDesign, idqrcode, setDialogOpen}) {
          nom : designSelected.nom,
          qrcode : idqrcode
       }
-      var url="http://localhost:8000/api/designqrcode/"
+      var url="/api/designqrcode/"
       const csrfToken = getCookie("csrftoken");
       console.log(csrfToken)
       const response = await fetch(url, {
@@ -42,7 +42,7 @@ function EditListDesign({listDesign, setListDesign, idqrcode, setDialogOpen}) {
          nom : designSelected.nom,
          qrcode : idqrcode
       }
-      var url="http://localhost:8000/api/designqrcode/"+designSelected.id+"/"
+      var url="/api/designqrcode/"+designSelected.id+"/"
       const csrfToken = getCookie("csrftoken");
       console.log(csrfToken)
       const response = await fetch(url, {
@@ -65,7 +65,7 @@ function EditListDesign({listDesign, setListDesign, idqrcode, setDialogOpen}) {
    }
 
    async function handleDelete(id){
-      var url="http://localhost:8000/api/designqrcode/"+id+"/"
+      var url="/api/designqrcode/"+id+"/"
       const csrfToken = getCookie("csrftoken");
       console.log(csrfToken)
       const response = await fetch(url, {

@@ -18,7 +18,7 @@ const handleChangePassword = async (e) => {
    e.preventDefault();
    const csrfToken = getCookie("csrftoken");
 
-   const response = await fetch("http://localhost:8000/api/change-password/", {
+   const response = await fetch("/api/change-password/", {
      method: "POST",
      credentials: "include",
      headers: {

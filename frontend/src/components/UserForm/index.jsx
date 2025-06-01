@@ -36,7 +36,7 @@ function UserForm({user, setUser, setDialogOpen, refresh}) {
             first_name:prenom,
             email:email
           }
-          url = "http://localhost:8000/api/users/"
+          url = "/api/users/"
       }else{
          data = {
             id : user.id,
@@ -44,7 +44,7 @@ function UserForm({user, setUser, setDialogOpen, refresh}) {
             first_name:prenom,
             email:email
           }
-          url = "http://localhost:8000/api/users/"+user.id+"/"
+          url = "/api/users/"+user.id+"/"
       }
       console.log(data)
       if (role === "SuperAdministrateur"){

@@ -15,7 +15,7 @@ function Header() {
   const [openDrawer, setOpenDrawer] = useState(false)
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/authorized/", {
+    fetch("/api/authorized/", {
       method: "GET",
       credentials: "include",
       headers: {

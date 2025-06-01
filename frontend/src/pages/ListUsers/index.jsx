@@ -36,7 +36,7 @@ function ListUsers() {
 
   useEffect(() => {
     const csrfToken = getCookie("csrftoken");
-    fetch(`http://localhost:8000/api/users/`,{
+    fetch(`/api/users/`,{
       method: "GET",
       credentials: "include",
       headers: {
@@ -55,7 +55,7 @@ function ListUsers() {
   const handleDelete = async (e) => {
     const csrfToken = getCookie("csrftoken");
     console.log(csrfToken)
-    const response = await fetch("http://localhost:8000/api/users/"+userSelected.id+"/", {
+    const response = await fetch("/api/users/"+userSelected.id+"/", {
       method: "DELETE",
       credentials: "include",
       headers: {

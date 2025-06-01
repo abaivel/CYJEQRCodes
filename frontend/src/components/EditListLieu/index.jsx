@@ -16,7 +16,7 @@ const [lieuSelected, setLieuSelected] = useState(null)
          nom : lieuSelected.nom,
          qrcode : idqrcode
       }
-      var url="http://localhost:8000/api/lieuqrcode/"
+      var url="/api/lieuqrcode/"
       const csrfToken = getCookie("csrftoken");
       console.log(csrfToken)
       const response = await fetch(url, {
@@ -42,7 +42,7 @@ const [lieuSelected, setLieuSelected] = useState(null)
          nom : lieuSelected.nom,
          qrcode : idqrcode
       }
-      var url="http://localhost:8000/api/lieuqrcode/"+lieuSelected.id+"/"
+      var url="/api/lieuqrcode/"+lieuSelected.id+"/"
       const csrfToken = getCookie("csrftoken");
       console.log(csrfToken)
       const response = await fetch(url, {
@@ -65,7 +65,7 @@ const [lieuSelected, setLieuSelected] = useState(null)
    }
 
    async function handleDelete(id){
-      var url="http://localhost:8000/api/lieuqrcode/"+id+"/"
+      var url="/api/lieuqrcode/"+id+"/"
       const csrfToken = getCookie("csrftoken");
       console.log(csrfToken)
       const response = await fetch(url, {

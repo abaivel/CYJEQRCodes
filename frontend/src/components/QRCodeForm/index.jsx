@@ -35,7 +35,7 @@ function QRCodeForm({qrcode, setQrCode, setDialogOpen, refresh}) {
             lien:lien,
             type:type
           }
-          url = "http://localhost:8000/api/qrcodes/"
+          url = "/api/qrcodes/"
       }else{
          data = {
             id : qrcode.id,
@@ -45,7 +45,7 @@ function QRCodeForm({qrcode, setQrCode, setDialogOpen, refresh}) {
             dateCreation : qrcode.dateCreation,
             type:type
           }
-          url = "http://localhost:8000/api/qrcodes/"+qrcode.id+"/"
+          url = "/api/qrcodes/"+qrcode.id+"/"
       }
       console.log(data)
   

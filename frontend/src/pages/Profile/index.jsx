@@ -17,7 +17,7 @@ function Profile() {
  }
 
 useEffect(() => {
-    fetch("http://localhost:8000/api/profile/", {
+    fetch("/api/profile/", {
       method: "GET",
       credentials: "include",
       headers: {
@@ -39,7 +39,7 @@ useEffect(() => {
   const handleSubmit = async () => {
     const csrfToken = getCookie("csrftoken");
     console.log(csrfToken)
-    const response = await fetch("http://localhost:8000/api/profile/", {
+    const response = await fetch("/api/profile/", {
       method: "PATCH",
       credentials: "include",
       headers: {
@@ -57,7 +57,7 @@ useEffect(() => {
  const handleLogout = async () => {
   const csrfToken = getCookie("csrftoken");
   console.log(csrfToken)
-  const response = await fetch("http://localhost:8000/api/logout/", {
+  const response = await fetch("/api/logout/", {
     method: "POST",
     credentials: "include",
     headers: {

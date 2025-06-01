@@ -60,7 +60,7 @@ function QRCodeCard({qrcode}) {
       e.stopPropagation()
       const csrfToken = getCookie("csrftoken");
       console.log(csrfToken)
-      const response = await fetch("http://localhost:8000/api/qrcodes/"+qrcode.id+"/", {
+      const response = await fetch("/api/qrcodes/"+qrcode.id+"/", {
         method: "DELETE",
         credentials: "include",
         headers: {

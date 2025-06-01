@@ -33,7 +33,7 @@ function search(event){
 
 useEffect(() => {
   const csrfToken = getCookie("csrftoken");
-  fetch(`http://localhost:8000/api/qrcodes/`,{
+  fetch(`/api/qrcodes/`,{
     method: "GET",
     credentials: "include",
     headers: {

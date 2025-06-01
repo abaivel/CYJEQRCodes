@@ -15,7 +15,7 @@ function Connexion() {
       credentials: "include",
     });
     const checkAuth = async () => {
-      const response = await fetch("http://localhost:8000/api/check-auth/", {
+      const response = await fetch("/api/check-auth/", {
         credentials: "include",
       });
 
