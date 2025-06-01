@@ -130,7 +130,7 @@ function handleOpenListDesign(){
         credentials: "include",
         })
       let dataGetQrCode = await responseGetQrCode.json()
-      dataGetQrCode.qrcodeId = idQRCode
+      dataGetQrCode.id = idQRCode
       setQrCode(dataGetQrCode)
       
 
@@ -270,13 +270,13 @@ function handleOpenListDesign(){
 
       <Dialog open={openListLieu} onClose={handleCloseListLieu}>
          <DialogContent style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <EditListLieu listLieu={listLieu} setListLieu={setListLieu} idqrcode={idQRCode}/>
+            <EditListLieu listLieu={listLieu} setListLieu={setListLieu} idqrcode={idQRCode} setDialogOpen={setOpenListLieu}/>
          </DialogContent>
       </Dialog>
 
       <Dialog open={openListDesign} onClose={handleCloseListDesign}>
          <DialogContent style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <EditListDesign listDesign={listDesign} setListDesign={setListDesign} idqrcode={idQRCode}/>
+            <EditListDesign listDesign={listDesign} setListDesign={setListDesign} idqrcode={idQRCode} setDialogOpen={setOpenListDesign}/>
          </DialogContent>
       </Dialog>
     </div>

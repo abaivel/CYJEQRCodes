@@ -8,6 +8,8 @@ import ListItemText from '@mui/material/ListItemText';
 import FormHelperText from '@mui/material/FormHelperText';
 import * as React from 'react';
 import { getCookie } from '../../utils/cookies';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 function UserForm({user, setUser, setDialogOpen, refresh}) {
    const [prenom, setPrenom] = React.useState(user.first_name);
@@ -78,6 +80,18 @@ function UserForm({user, setUser, setDialogOpen, refresh}) {
    return (
      <div>
       <h2 style={{margin:0, textAlign:'center'}}>{title}</h2>
+      <IconButton
+          aria-label="close"
+          onClick={()=>setDialogOpen(false)}
+          sx={(theme) => ({
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: theme.palette.grey[500],
+          })}
+        >
+          <CloseIcon />
+        </IconButton>
       <TextField value={prenom}
          onChange={(event)=>setPrenom(event.target.value)} 
          color="secondary" 

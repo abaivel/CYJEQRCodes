@@ -7,6 +7,8 @@ import QRCode from './pages/QRCode';
 import Profile from './pages/Profile';
 import ListUsers from './pages/ListUsers';
 import Link from './pages/Link';
+import Fab from '@mui/material/Fab';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import LoginLayout from './layouts/LoginLayout';
@@ -31,6 +33,9 @@ const theme = createTheme({
     },
   },
 });
+const handleOpenHelp = () => {
+    window.open('/documents/Manuel_utilisation_CYJE_QRCodes.pdf', '_blank');
+  };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -55,6 +60,10 @@ root.render(
             </Routes>
             
                   </Router>
+                   <Fab onClick={handleOpenHelp} variant="extended" style={{position: 'fixed',bottom: 16,right: 16}}>
+                      <QuestionMarkIcon sx={{ mr: 1 }} />
+                      Besoin d'aide
+                    </Fab>
                   </ThemeProvider>
 );
 

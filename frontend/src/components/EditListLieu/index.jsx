@@ -6,8 +6,9 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import {useState} from 'react';
 import { getCookie } from '../../utils/cookies';
+import CloseIcon from '@mui/icons-material/Close';
 
-function EditListLieu({listLieu, setListLieu, idqrcode}) {
+function EditListLieu({listLieu, setListLieu, idqrcode, setDialogOpen}) {
 const [lieuSelected, setLieuSelected] = useState(null)
 
    async function handleCreate(){
@@ -82,7 +83,19 @@ const [lieuSelected, setLieuSelected] = useState(null)
    }
 
   return <div>
-   <h3 style={{marginTop:0}}>Liste des lieux pour ce QR Code</h3>
+   <h3 style={{marginTop:0,marginRight: 20,marginLeft: 20}}>Liste des lieux pour ce QR Code</h3>
+   <IconButton
+          aria-label="close"
+          onClick={()=>setDialogOpen(false)}
+          sx={(theme) => ({
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: theme.palette.grey[500],
+          })}
+        >
+          <CloseIcon />
+        </IconButton>
    <div style={{borderTop:"1px solid black",display: "flex",flexDirection: "column",alignItems: "center"}}>
    {listLieu.map((design) => (
        lieuSelected!=null && design.id === lieuSelected.id ? 

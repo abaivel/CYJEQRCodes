@@ -8,6 +8,8 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import ListItemText from '@mui/material/ListItemText';
 import FormHelperText from '@mui/material/FormHelperText';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 function QRCodeForm({qrcode, setQrCode, setDialogOpen, refresh}) {
    const [nom, setNom] = React.useState(qrcode.nom);
@@ -15,7 +17,7 @@ function QRCodeForm({qrcode, setQrCode, setDialogOpen, refresh}) {
    const [type, setType] = React.useState(qrcode.type);
    const listTypes = ["Affiche", "Autre"]
    var title = "Modifier un QR Code";
-   if (qrcode.qrcodeId===0){
+   if (qrcode.id===0){
       title = "Créer un QR Code";
    }
 
@@ -27,7 +29,7 @@ function QRCodeForm({qrcode, setQrCode, setDialogOpen, refresh}) {
       e.preventDefault();
       var data={}
       var url=""
-      if (qrcode.qrcodeId === 0){
+      if (qrcode.id === 0){
          data = {
             nom:nom,
             lien:lien,
@@ -36,21 +38,21 @@ function QRCodeForm({qrcode, setQrCode, setDialogOpen, refresh}) {
           url = "http://localhost:8000/api/qrcodes/"
       }else{
          data = {
-            id : qrcode.qrcodeId,
+            id : qrcode.id,
             nom:nom,
             lien:lien,
             sharelink:qrcode.sharelink,
             dateCreation : qrcode.dateCreation,
             type:type
           }
-          url = "http://localhost:8000/api/qrcodes/"+qrcode.qrcodeId+"/"
+          url = "http://localhost:8000/api/qrcodes/"+qrcode.id+"/"
       }
       console.log(data)
   
       const csrfToken = getCookie("csrftoken");
       console.log(csrfToken)
       const response = await fetch(url, {
-        method: qrcode.qrcodeId===0 ? "POST" : "PUT",
+        method: qrcode.id===0 ? "POST" : "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
@@ -70,6 +72,18 @@ function QRCodeForm({qrcode, setQrCode, setDialogOpen, refresh}) {
    return (
      <div>
       <h2 style={{margin:0, textAlign:'center'}}>{title}</h2>
+      <IconButton
+          aria-label="close"
+          onClick={()=>setDialogOpen(false)}
+          sx={(theme) => ({
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: theme.palette.grey[500],
+          })}
+        >
+          <CloseIcon />
+        </IconButton>
       <TextField value={nom}
          onChange={(event)=>setNom(event.target.value)} 
          color="secondary" 

@@ -160,7 +160,7 @@ function ListUsers() {
        </div>
        <Dialog open={open} onClose={handleClose}>
          <DialogContent style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <UserForm user= {userSelected} setDialogOpen={setOpenDeleteConfirmation} setUser={null} refresh={()=>window.location.reload()}/>
+            <UserForm user= {userSelected} setDialogOpen={setOpen} setUser={null} refresh={()=>window.location.reload()}/>
          </DialogContent>
       </Dialog>
       <Dialog open={openDeleteConfirmation} onClose={handleCloseDeleteConfirmation}>
