@@ -81,7 +81,7 @@ useEffect(() => {
 
       <Dialog open={openQRCodeForm} onClose={handleCloseQRCodeForm}>
          <DialogContent style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <QRCodeForm qrcode= {{qrcodeId : 0, nom:"", lien:"", type:""}} setDialogOpen={setOpenQRCodeForm} setQrCode={null} refresh={()=>window.location.reload()}/>
+            <QRCodeForm qrcode= {{id : 0, nom:"", lien:"", type:""}} setDialogOpen={setOpenQRCodeForm} setQrCode={null} refresh={()=>window.location.reload()}/>
          </DialogContent>
       </Dialog>
     </div>
