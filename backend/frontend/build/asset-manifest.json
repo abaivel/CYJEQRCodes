@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fc6d6704.css",
+    "main.js": "/static/js/main.4f325a2e.js",
+    "static/media/background_page_connexion.jpg": "/static/media/background_page_connexion.813c8da299315c8012b5.jpg",
+    "static/media/page_404_image.png": "/static/media/page_404_image.f4bdaf728548d951b713.png",
+    "static/media/Anton-Regular.ttf": "/static/media/Anton-Regular.170b842f9a8cd6150a0d.ttf",
+    "static/media/Poppins-Regular.ttf": "/static/media/Poppins-Regular.9171031e050ecf676c11.ttf",
+    "static/media/BarlowSemiCondensed-Regular.ttf": "/static/media/BarlowSemiCondensed-Regular.05cbb3ba9db7b5e1da6e.ttf",
+    "static/media/logowhite.png": "/static/media/logowhite.eabad71944a6e829654f.png",
+    "index.html": "/index.html",
+    "main.fc6d6704.css.map": "/static/css/main.fc6d6704.css.map",
+    "main.4f325a2e.js.map": "/static/js/main.4f325a2e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fc6d6704.css",
+    "static/js/main.4f325a2e.js"
+  ]
+}

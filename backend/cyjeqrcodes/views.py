@@ -18,6 +18,18 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.views.generic import View
+import os
+from django.http import HttpResponse
+
+class FrontendAppView(View):
+    def get(self, request):
+        try:
+            with open(os.path.join(settings.BASE_DIR, 'frontend', 'build', 'index.html')) as f:
+                return HttpResponse(f.read())
+        except FileNotFoundError:
+            return HttpResponse("index.html not found", status=501)
+
 
 @ensure_csrf_cookie
 @api_view(['GET'])

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -122,6 +123,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend', 'build', 'static')
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -160,7 +164,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates')
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'frontend', 'build')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -175,10 +180,10 @@ TEMPLATES = [
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = '' # Replace with your SMTP host
-EMAIL_HOST_USER = ""  # Your email address
-EMAIL_HOST_PASSWORD = ""  # Your email password
-DEFAULT_FROM_EMAIL = '' # Your email address
-SERVER_EMAIL = '' # Your email address
+EMAIL_HOST = 'smtp.gmail.com' # Replace with your SMTP host
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")  # Your email address
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")  # Your email password
+DEFAULT_FROM_EMAIL = config("EMAIL_HOST_USER")  # Your email address
+SERVER_EMAIL = config("EMAIL_HOST_USER")  # Your email address
 EMAIL_PORT = 587  # SMTP port
 EMAIL_USE_TLS = True
